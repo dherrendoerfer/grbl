@@ -6,6 +6,9 @@
 *This is a carefully modified version of Grbl to support boards with unipolar steppers*  
 The original Grbl code (of which this is a fork) can be found here: https://github.com/grbl/grbl
 
+The code currently supports this hardware board:  
+https://easyeda.com/dherrend/uCNC_Controller_v1c-5575314283b24aa9b43c46027174ab2c
+
 ***
 
 Grbl is a no-compromise, high performance, low cost alternative to parallel-port-based motion control for CNC milling. It will run on a vanilla Arduino (Duemillanove/Uno) as long as it sports an Atmega 328. 
