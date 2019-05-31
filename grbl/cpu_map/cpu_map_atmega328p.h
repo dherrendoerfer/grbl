@@ -84,7 +84,7 @@
     #define SPINDLE_ENABLE_BIT    3  // Uno Digital Pin 11
   #endif
 #else
-  #define SPINDLE_ENABLE_BIT    4  // Uno Digital Pin 12
+  #define SPINDLE_ENABLE_BIT    3  // Uno Digital Pin 12
 #endif
 #ifndef USE_SPINDLE_DIR_AS_ENABLE_PIN
   #define SPINDLE_DIRECTION_DDR   DDRB

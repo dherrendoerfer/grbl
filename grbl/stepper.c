@@ -241,7 +241,6 @@ static volatile uint8_t stepY = 0;
 static volatile uint8_t stepZ = 0;
 
 static uint8_t steplist_Unipolar[] = { 0B1000,0B1100,0B0100,0B0110,0B0010,0B0011,0B0001,0B1001 };
-//static const uint8_t steplist_Unipolar[] = { 0B0111,0B0011,0B1011,0B1001,0B1101,0B1100,0B1110,0B0110 };
 
 void step_unipolar()
 {

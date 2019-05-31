@@ -17,11 +17,10 @@
 
   You should have received a copy of the GNU General Public License
   along with Grbl.  If not, see <http://www.gnu.org/licenses/>.
-*/ 
+*/
 
 #ifndef spindle_control_h
-#define spindle_control_h 
-
+#define spindle_control_h
 
 // Initializes spindle pins and hardware PWM, if enabled.
 void spindle_init();
