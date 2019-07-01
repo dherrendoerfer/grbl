@@ -32,7 +32,7 @@
 #include <avr/wdt.h>
 #include <util/delay.h>
 #include <math.h>
-#include <inttypes.h>    
+#include <inttypes.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -57,6 +57,8 @@
 #include "report.h"
 #include "serial.h"
 #include "spindle_control.h"
+#include "virt_servo.h"
+#include "virt_stepper.h"
 #include "stepper.h"
 
 #endif

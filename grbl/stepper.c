@@ -177,9 +177,6 @@ static st_prep_t prep;
   are shown and defined in the above illustration.
 */
 
-void step_unipolar_power();
-volatile static uint8_t vPORTD;
-
 // Stepper state initialization. Cycle should only start if the st.cycle_start flag is
 // enabled. Startup init and limits call this function but shouldn't start the cycle.
 void st_wake_up()
@@ -235,72 +232,6 @@ void st_go_idle()
   step_unipolar_power();
 }
 
-
-static volatile uint8_t stepX = 0;
-static volatile uint8_t stepY = 0;
-static volatile uint8_t stepZ = 0;
-
-static uint8_t steplist_Unipolar[] = { 0B1000,0B1100,0B0100,0B0110,0B0010,0B0011,0B0001,0B1001 };
-
-void step_unipolar()
-{
-  // Hardcoded ports
-
-  //Stepper 1(X)
-  PORTB = (PORTB & 0B11111000) | (steplist_Unipolar[stepX & 0x07] >> 1);
-  PORTD = (PORTD & 0B01111111) | (steplist_Unipolar[stepX & 0x07] << 7);
-  //Stepper 2(Y)
-  PORTD = (PORTD & 0B10000111) | (steplist_Unipolar[stepY & 0x07] << 3);
-  //Stepper 3(Z)
-  PORTC = (PORTC & 0B11110000) | steplist_Unipolar[stepZ & 0x07];
-}
-
-void step_unipolar_init()
-{
-  DDRB |= 0B00000111;
-  DDRD |= 0B11111000;
-  DDRC |= 0B00001111;
-}
-
-void step_unipolar_power()
-{
-  if (STEP_PORT & (1<<STEPPERS_DISABLE_BIT)) {
-    //Stepper 1(X)
-    PORTB = PORTB & ~0B00000111;
-    PORTD = PORTD & ~0B10000000;
-    //Stepper 2(Y)
-    PORTD = PORTD & ~0B01111000;
-    //Stepper 3(Z)
-    PORTC = PORTC & ~0B00001111;
-  }
-  else {
-    step_unipolar(); //put the last step on the steppers
-  }
-}
-
-void step_virtual_unipolar()
-{
-  if (STEP_PORT & (1<<X_STEP_BIT)) {
-    if (DIRECTION_PORT & (1<<X_DIRECTION_BIT))
-      stepX++;
-    else
-      stepX--;
-  }
-  if (STEP_PORT & (1<<Y_STEP_BIT)) {
-    if (DIRECTION_PORT & (1<<Y_DIRECTION_BIT))
-      stepY++;
-    else
-      stepY--;
-  }
-  if (STEP_PORT & (1<<Z_STEP_BIT)) {
-    if (DIRECTION_PORT & (1<<Z_DIRECTION_BIT))
-      stepZ--;
-    else
-      stepZ++;
-  }
-
-  step_unipolar();
-}
 
 /* "The Stepper Driver Interrupt" - This timer interrupt is the workhorse of Grbl. Grbl employs
    the venerable Bresenham line algorithm to manage and exactly synchronize multi-axis moves.

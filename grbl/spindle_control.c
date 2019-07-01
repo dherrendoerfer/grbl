@@ -21,62 +21,6 @@
 
 #include "grbl.h"
 
-static unsigned int servoIsrCounter = 0;
-
-volatile uint8_t servoVal = 0;
-volatile uint8_t servo_enabled = 1;
-
-#define SERVO_FRAME_LENGTH  120
-#define SERVO_PIN           4
-
-void servo_spindle_init()
-{
-  // Enable Pin output
-  DDRB |= (1<<SERVO_PIN);
-
-  servoIsrCounter = 0; // clear the value of the ISR counter;
-
-  TCCR2A = 0;
-  TCCR2B = 0;
-
-  /* Configure timer2 in normal mode (pure counting, no PWM etc.) */
-  TCCR2A &= ~((1<<WGM21) | (1<<WGM20));
-  TCCR2B &= ~(1<<WGM22);
-
-  /* Disable Compare Match A interrupt enable (only want overflow) */
-  TIMSK2 &= ~(1<<OCIE2A);
-
-  TCNT2 = 140;            // preload timer 65536-16MHz/256/2Hz
-  TCCR2B |= (1 << CS22);    // prescaler
-  TCCR2B |= (1 << CS20);    // prescaler
-  //TCCR2B &= ~(1 << CS20);
-  TCCR2B &= ~(1 << CS21);
-  TIMSK2 |= (1 << TOIE2);   // enable timer overflow interrupt
-}
-
-ISR (TIMER2_OVF_vect)
-{
-  TCNT2 = 236; // preload timer value *experimented
-  servoIsrCounter++;
-
-  if (servoIsrCounter == SERVO_FRAME_LENGTH) {
-    servoIsrCounter = 0;
-    return;
-  }
-
-  if (servo_enabled && servoIsrCounter == 1) {
-    TCNT2 = 200 - (servoVal>>1);
-    PORTB = PORTB | (1<<SERVO_PIN);  //Pin12
-    return;
-  }
-  if (servoIsrCounter == 2) {
-    TCNT2 = 200 - (servoVal>>1);
-    return;
-  }
-  if (servoIsrCounter == 3) {
-    PORTB = PORTB & ~(1<<SERVO_PIN);  //Pin12)
-  }
-}
 
 void spindle_init()
 {
@@ -95,7 +39,12 @@ void spindle_init()
   #ifndef USE_SPINDLE_DIR_AS_ENABLE_PIN
     SPINDLE_DIRECTION_DDR |= (1<<SPINDLE_DIRECTION_BIT); // Configure as output pin.
   #endif
-  servo_spindle_init();
+
+  #ifdef SERVO_SPINDLE
+    servo_init();
+    servoVal = 90; // For Spindle mode servo starts in the middle
+  #endif
+
   spindle_stop();
 }
 
@@ -120,7 +69,9 @@ void spindle_stop()
     #endif
   #endif
 
-  servoVal = 90;
+  #ifdef SERVO_SPINDLE
+    servoVal = 90;
+  #endif
 }
 
 
@@ -132,17 +83,23 @@ void spindle_set_state(uint8_t state, float rpm)
     spindle_stop();
 
   } else {
-    uint8_t servo_level = 90;
-    if (rpm <= 90)
-      servo_level = rpm;
+    #ifdef SERVO_SPINDLE
+      uint8_t servo_level = 90;
+      if (rpm <= 90)
+        servo_level = rpm;
+    #endif
 
     #ifndef USE_SPINDLE_DIR_AS_ENABLE_PIN
       if (state == SPINDLE_ENABLE_CW) {
         SPINDLE_DIRECTION_PORT &= ~(1<<SPINDLE_DIRECTION_BIT);
-        servoVal = 90+servo_level;
+        #ifdef SERVO_SPINDLE
+          servoVal = 90+servo_level;
+        #endif
       } else {
         SPINDLE_DIRECTION_PORT |= (1<<SPINDLE_DIRECTION_BIT);
-        servoVal = 90-servo_level;
+        #ifdef SERVO_SPINDLE
+          servoVal = 90-servo_level;
+        #endif
       }
     #endif
 
