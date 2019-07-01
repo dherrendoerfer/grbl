@@ -9,6 +9,14 @@ The original Grbl code (of which this is a fork) can be found here: https://gith
 The code currently supports this hardware board:  
 https://easyeda.com/dherrend/uCNC_Controller_v1c-5575314283b24aa9b43c46027174ab2c
 
+#### Supported features
+- three unipolar steppers for X,Y,Z 
+- spindle control to driver output for power
+- spindle control to servo output for center/up/down (M5,M3,M4)
+- servo angle control through spindle speed
+- one end switch for all axis
+- two multi-porpose inputs (for leveling) available
+
 ***
 
 Grbl is a no-compromise, high performance, low cost alternative to parallel-port-based motion control for CNC milling. It will run on a vanilla Arduino (Duemillanove/Uno) as long as it sports an Atmega 328. 
