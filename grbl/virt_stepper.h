@@ -24,9 +24,26 @@
 
 /* Note: The the Port and direction values are hardcoded to there
          supported board, since they can overlap the hardware masks
+         
+   Make sure that only one of the folowing two defines is set; they 
+   are exclusive!
  */
 
+/* This define will make the servo move when the spindle is turned on
+   or off, the degree of movement from the middle position is defined
+   by the spindle speed (Use M4 S90 to turn it 90 degrees)
+   The spindle direction is honored: the servo will move in different 
+   directions
+ */
 //#define SERVO_SPINDLE
+
+/* This define will make the servo move according to the Z-axis position.
+   You must use the Z-axis steps per millimeter setting to define the 
+   degrees per milimeter.
+   Upon reset or initialisation the servo will always move to the zero 
+   position (all the way up), and must be reset to real zero before each
+   use.
+ */
 #define SERVO_Z_PROPORTIONAL
 
 // This is the emulated port
