@@ -44,6 +44,7 @@
    Upon reset or initialisation the servo will always move to the zero 
    position (all the way up), and must be reset to real zero before each
    use.
+   This will also disable the Z-axis stepper !
  */
 //#define SERVO_Z_PROPORTIONAL
 
