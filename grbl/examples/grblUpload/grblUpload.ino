@@ -24,6 +24,34 @@ Copyright (c) 2015 Sungeun K. Jeon
 Released under the MIT-license. See license.txt for details.
 ***********************************************************************/
 
+/* This version is specifically tailored for uCNC_Controller based boards.
+   It probably won't work on generic grbl boards, because it is designed
+   for unipolar steppers and ULN2004 drivers. See the repo documentation
+   for more info on this.
+
+   Make sure that only one of the folowing two defines is set; they 
+   are exclusive! 
+   You can set these here, or in the grblUpload.ino file in examples. 
+ */
+
+/* This define will make the servo move when the spindle is turned on
+   or off, the degree of movement from the middle position is defined
+   by the spindle speed (Use M4 S90 to turn it 90 degrees)
+   The spindle direction is honored: the servo will move in different 
+   directions
+ */
+//#define SERVO_SPINDLE
+
+/* This define will make the servo move according to the Z-axis position.
+   You must use the Z-axis steps per millimeter setting to define the 
+   degrees per milimeter.
+   Upon reset or initialisation the servo will always move to the zero 
+   position (all the way up), and must be reset to real zero before each
+   use.
+   This will also disable the Z-axis stepper !
+ */
+//#define SERVO_Z_PROPORTIONAL
+
 #include <grbl.h>
 
 // Do not alter this file!
