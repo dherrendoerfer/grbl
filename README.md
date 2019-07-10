@@ -11,11 +11,14 @@ https://easyeda.com/dherrend/uCNC_Controller_v1c-5575314283b24aa9b43c46027174ab2
 
 #### Supported features
 - three unipolar steppers for X,Y,Z 
-- spindle control to driver output for power
-- spindle control to servo output for center/up/down (M5,M3,M4)
-- servo angle control through spindle speed
+- spindle control to driver output for laser/spindle power
+- Z-axis position on servo * 
+- spindle control to servo output for center/up/down (M5,M3,M4) *
+- servo angle control through spindle speed *
 - one end switch for all axis
 - two multi-porpose inputs (for leveling) available
+  
+* Requires editing the configuration  
 
 ***
 
