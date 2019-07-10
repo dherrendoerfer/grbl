@@ -26,7 +26,8 @@
          supported board, since they can overlap the hardware masks
          
    Make sure that only one of the folowing two defines is set; they 
-   are exclusive!
+   are exclusive! 
+   You can set these here, or in the grblUpload.ino file in examples. 
  */
 
 /* This define will make the servo move when the spindle is turned on
@@ -44,7 +45,7 @@
    position (all the way up), and must be reset to real zero before each
    use.
  */
-#define SERVO_Z_PROPORTIONAL
+//#define SERVO_Z_PROPORTIONAL
 
 // This is the emulated port
 volatile uint8_t vPORTD;
